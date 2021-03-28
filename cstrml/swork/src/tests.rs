@@ -42,7 +42,7 @@ fn register_should_work() {
     });
 }
 
-// Duplicate pk check is removed due to the uniqueness guaranteed by sWorker-side
+// Duplicate pk check is removed due to the uniqueness guaranteed by Tars-side
 
 #[test]
 fn register_should_failed_with_unmatched_reporter() {
@@ -954,7 +954,7 @@ fn ab_upgrade_should_work() {
             // 1. Runs to 303 block
             run_to_block(303);
 
-            // 2. Report works with sWorker A
+            // 2. Report works with Tars A
             assert_ok!(Swork::report_works(
                 Origin::signed(reporter.clone()),
                 a_wr_info.curr_pk,
@@ -984,7 +984,7 @@ fn ab_upgrade_should_work() {
             assert_eq!(Swork::reported_files_size(), 2);
             assert_eq!(Swork::reported_in_slot(&a_pk, 300), true);
 
-            // 4. Runs to 606, and do sWorker upgrade
+            // 4. Runs to 606, and do Tars upgrade
             Swork::update_identities();
             run_to_block(606);
             // Fake do upgrade
@@ -992,7 +992,7 @@ fn ab_upgrade_should_work() {
             // 5. (Fake) Register B 🤣, suppose B's code is upgraded
             register(&b_pk, LegalCode::get());
 
-            // 6. Report works with sWorker B
+            // 6. Report works with Tars B
             assert_ok!(Swork::report_works(
                 Origin::signed(reporter.clone()),
                 b_wr_info_1.curr_pk,
@@ -1171,14 +1171,14 @@ fn ab_upgrade_should_failed_with_files_size_unmatch() {
                 a_wr_info.sig
             ));
 
-            // 2. Runs to 606, and do sWorker upgrade
+            // 2. Runs to 606, and do Tars upgrade
             run_to_block(606);
             // Fake do upgrade
 
             // 3. (Fake) Register B 🤣, suppose B's code is upgraded
             register(&b_pk, LegalCode::get());
 
-            // 4. Report works with sWorker B will failed
+            // 4. Report works with Tars B will failed
             assert_noop!(
                 Swork::report_works(
                     Origin::signed(reporter.clone()),
